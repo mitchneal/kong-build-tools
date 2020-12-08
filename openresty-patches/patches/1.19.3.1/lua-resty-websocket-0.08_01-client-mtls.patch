@@ -1,20 +1,20 @@
-diff --git a/lua-resty-websocket-0.07/lib/resty/websocket/client.lua b/lua-resty-websocket-0.07/lib/resty/websocket/client.lua
+diff --git a/lua-resty-websocket-0.08/lib/resty/websocket/client.lua b/lua-resty-websocket-0.08/lib/resty/websocket/client.lua
 index 13d4b99..47dc4c2 100644
---- a/lua-resty-websocket-0.07/lib/resty/websocket/client.lua
-+++ b/lua-resty-websocket-0.07/lib/resty/websocket/client.lua
+--- a/lua-resty-websocket-0.08/lib/resty/websocket/client.lua
++++ b/lua-resty-websocket-0.08/lib/resty/websocket/client.lua
 @@ -98,7 +98,7 @@ function _M.connect(self, uri, opts)
          path = "/"
      end
 
--    local ssl_verify, proto_header, origin_header, sock_opts = false
-+    local ssl_verify, proto_header, origin_header, sock_opts, tls_opts = false
+-    local ssl_verify, headers, proto_header, origin_header, sock_opts = false
++    local ssl_verify, headers, proto_header, origin_header, sock_opts, tls_opts = false
 
      if opts then
          local protos = opts.protocols
 @@ -122,11 +122,37 @@ function _M.connect(self, uri, opts)
              sock_opts = { pool = pool }
          end
-
+ 
 +        local client_cert = opts.client_cert
 +        local client_priv_key = opts.client_priv_key
 +
@@ -48,9 +48,9 @@ index 13d4b99..47dc4c2 100644
 +            tls_opts = tls_opts or {}
 +            tls_opts.server_name = host
          end
-     end
-
-@@ -144,9 +170,9 @@ function _M.connect(self, uri, opts)
+ 
+         if opts.headers then
+@@ -151,9 +177,9 @@ function _M.connect(self, uri, opts)
          if not ssl_support then
              return nil, "ngx_lua 0.9.11+ required for SSL sockets"
          end
